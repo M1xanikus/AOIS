@@ -1,4 +1,6 @@
-﻿using BinaryNumbers;
+﻿using System;
+using System.Globalization;
+using BinaryNumbers;
 using Operations;
 namespace Menu
 {
@@ -6,27 +8,13 @@ namespace Menu
     {
         static void Main(string[] args)
         {
-            //Binary_fract a = new Binary_fract(3.25);
-            //Console.WriteLine(a.Binary);
-            //Binary_fract b = new Binary_fract(a.Binary);
-            //Console.WriteLine(b.Number);
-            //Binary a = new Binary(9);
-            //Console.WriteLine(a.Straight_binary);
-            //Binary b = new Binary(7);
-            //Console.WriteLine(b.Straight_binary);
-            //Operation op = new Operation();
-            //string c = op.Multiplication(a, b);
-            //Binary cb = new Binary(c);
-            //Console.WriteLine(c);
-            //Console.WriteLine(cb.Number);
-            //Console.WriteLine(a.Straight_binary);
-            //Console.WriteLine(a.Reverse_binary);
-            //Console.WriteLine(a.Additional_binary);
-            //Console.WriteLine(a.Make_Decimal());
+           
+            NumberStyles style = NumberStyles.Float;
+            CultureInfo culture = CultureInfo.InvariantCulture;
             int choose = -1;
             while (choose != 0)
             {
-                Console.WriteLine("Выберите операцию:\n1. Сложение\n2. Умножение\n3. Деление\n0. Выход");
+                Console.WriteLine("Выберите операцию:\n1. Сложение\n2. Умножение\n3. Перевод дробного десятичного в двоичный\n0. Выход");
                 choose = Convert.ToInt32(Console.ReadLine());
                 switch (choose)
                 {
@@ -52,8 +40,34 @@ namespace Menu
                         Binary c2 = new(op2.Multiplication(a2, b2));
                         Console.WriteLine($"Результат умножения:\nДвоичное представление[{c2.Straight_binary}]\nДесятичное:{c2.Number}");
                         break;
+                    case 3:
+                        Console.WriteLine("Введите число:");
+                        string str = Console.ReadLine().Replace(".",",");
+                        Binary_fract a3 = new(Double.Parse(str));
+                        Console.WriteLine($"В десятичном формате:[{a3.Number}]");
+                        Console.WriteLine($"В двоичном формате:[{a3.Binary}]");
+                        break;
+
+
                 }
             }
             }
     }
-}
+} 
+//Binary_fract a = new Binary_fract(3.25);
+            //Console.WriteLine(a.Binary);
+            //Binary_fract b = new Binary_fract(a.Binary);
+            //Console.WriteLine(b.Number);
+            //Binary a = new Binary(9);
+            //Console.WriteLine(a.Straight_binary);
+            //Binary b = new Binary(7);
+            //Console.WriteLine(b.Straight_binary);
+            //Operation op = new Operation();
+            //string c = op.Multiplication(a, b);
+            //Binary cb = new Binary(c);
+            //Console.WriteLine(c);
+            //Console.WriteLine(cb.Number);
+            //Console.WriteLine(a.Straight_binary);
+            //Console.WriteLine(a.Reverse_binary);
+            //Console.WriteLine(a.Additional_binary);
+            //Console.WriteLine(a.Make_Decimal());
