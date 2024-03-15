@@ -9,12 +9,10 @@ namespace Menu
         static void Main(string[] args)
         {
            
-            NumberStyles style = NumberStyles.Float;
-            CultureInfo culture = CultureInfo.InvariantCulture;
             int choose = -1;
             while (choose != 0)
             {
-                Console.WriteLine("Выберите операцию:\n1. Сложение\n2. Умножение\n3. Перевод дробного десятичного в двоичный\n0. Выход");
+                Console.WriteLine("Выберите операцию:\n1. Сложение\n2. Умножение\n3. Деление\n0. Выход");
                 choose = Convert.ToInt32(Console.ReadLine());
                 switch (choose)
                 {
@@ -41,11 +39,21 @@ namespace Menu
                         Console.WriteLine($"Результат умножения:\nДвоичное представление[{c2.Straight_binary}]\nДесятичное:{c2.Number}");
                         break;
                     case 3:
-                        Console.WriteLine("Введите число:");
-                        string str = Console.ReadLine().Replace(".",",");
-                        Binary_fract a3 = new(Double.Parse(str));
-                        Console.WriteLine($"В десятичном формате:[{a3.Number}]");
-                        Console.WriteLine($"В двоичном формате:[{a3.Binary}]");
+                        //Console.WriteLine("Введите число:");
+                        //string str = Console.ReadLine().Replace(".",",");
+                        //Binary_fract a3 = new(Double.Parse(str));
+                        //Console.WriteLine($"В десятичном формате:[{a3.Number}]");
+                        //Console.WriteLine($"В двоичном формате:[{a3.Binary}]");
+                        Console.WriteLine("Введите первое число:");
+                        Binary a3 = new(Convert.ToInt32(Console.ReadLine()));
+                        Console.WriteLine($"Прямой код: [{a3.Straight_binary}]\r\nОбратный код: [{a3.Reverse_binary}]\r\nДополнительный код: [{a3.Additional_binary}]\r\n");
+                        Console.WriteLine("Введите второе число:");
+                        Binary b3 = new(Convert.ToInt32(Console.ReadLine()));
+                        Console.WriteLine($"Прямой код: [{b3.Straight_binary}]\r\nОбратный код: [{b3.Reverse_binary}]\r\nДополнительный код: [{b3.Additional_binary}]\r\n");
+                        Operation op3 = new();
+                        Binary_fract c3 = new(op3.Division(a3, b3));
+                        Console.WriteLine(c3.Binary);
+                        Console.WriteLine(c3.Number);
                         break;
 
 

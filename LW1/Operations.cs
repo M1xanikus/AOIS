@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.XPath;
@@ -168,10 +170,198 @@ namespace Operations
             else return result.Insert(0, "0");
 
         }
+        public bool compare(string bigger, string smaller)
+        {   
+            if(bigger.Length > smaller.Length)
+            {
+                int length_small = smaller.Length;
+                for(int i = 0; i < bigger.Length- length_small; i++)
+            {
+                smaller = smaller.Insert(0,"0");
+            }
+            }
+            if(bigger.Length < smaller.Length)
+            {
+                int length_big = bigger.Length;
+                for(int i = 0; i < smaller.Length - length_big; i++)
+            {
+               bigger = bigger.Insert(0,"0");
+            }
+            }
+            for(int i = 1; i < bigger.Length; i++)
+            {
+                if(bigger[i] == '0' && smaller[i] == '0' ){continue;}
+                if(bigger[i] == '1' && smaller[i] == '1'){continue;}
+                if(bigger[i] == '1' && smaller[i] == '0'){return true;}
+                else if(bigger[i] == '0' && smaller[i] == '1'){return false;}
 
-        public string Division(Binary_fract a, Binary_fract b)
+            }
+            return true;
+        }   
+        public string cut_off(string a, int step)
         {
-            return "";
+            string result = "";
+            bool step_active = false;
+            for( int i = 1; i < a.Length;i++)
+            {   
+                if( step == 0)
+                {
+                    break;
+                }
+                if(a[i] == '0' && step_active)
+                {
+                    step--;
+                    result = result.Insert(result.Length,"0");
+                }
+                if(a[i] == '0' && step_active == false)
+                {
+                   continue;
+                }
+                if(a[i] == '1')
+                {   step_active = true;
+                    step--;
+                    result = result.Insert(result.Length,"1");
+                }
+            }
+            for(int i = 0; i < 16-result.Length; i++)
+            {
+                result = result.Insert(0,"0");
+            }
+        return result;
+
+        }
+        public int count_num_part(string a)
+        {
+            int count = 0;
+            bool is_num_part = false;
+            for( int i = 1; i < a.Length;i++)
+            {   
+                if(a[i] == '0' && is_num_part == false ){ continue;}
+                if(a[i] == '0' && is_num_part ){ count++;}
+                if(a[i] == '1')
+                { 
+                    count++;
+                    is_num_part = true;
+                }
+            }
+            return count;
+        }
+        public string Division(Binary a, Binary b)
+        {  
+            //if( a.Straight_binary == b.Straight_binary)   
+            // building full part
+            bool first_op = false, full_part_is_zero = true;
+            int demolition, count_part = count_num_part(a.Straight_binary);
+            string result = "" , buf1 = a.Straight_binary;
+            for( int i = 1 ; i <= count_part ; i++)
+            {
+                if(compare(cut_off(buf1,i), b.Straight_binary) && !first_op) // first operation
+                {   
+                    if( i != count_part )
+                    {   int len_buf;
+                    full_part_is_zero = false;
+                        demolition = 15 - count_part  + i + 1; // number for demolition
+                        buf1 = cut_off(buf1,i);
+                        len_buf = buf1.Length;
+                        for(int j = 0; j< 15 - len_buf;j++)
+                        {
+                            buf1 = buf1.Insert(0,"0");
+                        }
+                        buf1 = Mechanical_Addition(buf1, b.Additional_binary).Insert(buf1.Length, a.Straight_binary[demolition].ToString()) ;
+                        first_op = true;
+                        result = result.Insert(result.Length,"1");
+                        continue;
+                    }
+                    else
+                    { // срез не нужен, т.к. численная часть закончилась и мы здесь заканчиваем вычисление целой части
+                        buf1 = Mechanical_Addition(buf1, b.Additional_binary);
+                        result = result.Insert(result.Length,"1");
+                        break;
+                    }
+                }
+                //
+                 else if( !compare(buf1,b.Straight_binary) && i == count_part && first_op)
+                 {
+                  int len_buf = buf1.Length;
+                  if(len_buf >= 16){buf1 = buf1.Remove(0,len_buf-15);}
+                    buf1 = buf1.Insert(buf1.Length,a.Straight_binary[15].ToString());
+                    result = result.Insert(result.Length,"0");
+                }
+                else if( compare(buf1,b.Straight_binary) && first_op)
+                {   
+                  if( i != count_part )
+                  {
+                  int len_buf = buf1.Length;
+                  demolition = 15 - count_part  + i + 1;
+                  if(len_buf >= 16){buf1 = buf1.Remove(0,len_buf-15);}
+                  if(Mechanical_Addition(buf1, b.Additional_binary) == "000000000000000")
+                  {
+                  buf1 = Mechanical_Addition(buf1, b.Additional_binary);
+                  }
+                  else
+                  {
+                    buf1 = Mechanical_Addition(buf1, b.Additional_binary).Insert(buf1.Length,a.Straight_binary[demolition].ToString() );
+                  }
+                  result = result.Insert(result.Length,"1");
+                  continue;
+                  }
+                  else
+                  {
+                    buf1 = Mechanical_Addition(buf1, b.Additional_binary);
+                    result = result.Insert(result.Length,"1");
+                    break;
+                  }
+                }
+                else if( !compare(buf1,b.Straight_binary) && first_op && i != count_part)// если число получилось маленькое, еще раз сносим 
+                {
+                    demolition = 15 - count_part  + i + 1;
+                    buf1 = buf1.Insert(buf1.Length,a.Straight_binary[demolition].ToString() );
+                    int len_buf = buf1.Length;
+                    buf1 = buf1.Remove(0,len_buf-16);
+                    result = result.Insert(result.Length,"0");
+                }
+               
+
+            }
+            first_op = false;
+            string fract_part = "";
+            for(int i = 0; i< 5; i++)
+            {
+                
+
+                    if(compare(buf1.Insert(buf1.Length,"0"), b.Straight_binary))
+                    {
+                    buf1 = buf1.Insert(buf1.Length,"0");
+                    int len_buf = buf1.Length;
+                    buf1 = buf1.Remove(0,len_buf-16);
+                    buf1 = Mechanical_Addition(buf1, b.Additional_binary);
+                    fract_part = fract_part.Insert(fract_part.Length,"1");
+                    continue;
+                    }
+                    else if(!compare(buf1.Insert(buf1.Length,"0"), b.Straight_binary))
+                    {
+                        buf1 = buf1.Insert(buf1.Length,"0");
+                        fract_part = fract_part.Insert(fract_part.Length,"0");
+                    }
+            }
+           if(full_part_is_zero)
+           {
+            for(int i = 0; i< 11; i++)
+            {
+                result = result.Insert(0,"0");
+            }
+            return result += fract_part;
+           }
+           else
+           {
+           int result_len = result.Length;
+            for(int i = 0; i < 11 - result_len; i++)
+           {
+                result = result.Insert(0,"0");
+           }
+            return result += fract_part;
+           }
+           
         }
     }
 }
