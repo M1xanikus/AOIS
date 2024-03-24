@@ -83,6 +83,48 @@ namespace Operations
             }
             return result;
         }
+        public string Addition_float(Binary_IEEE a , Binary_IEEE b )
+        {
+            string bin_exp = a.Binary_exp;
+            string mant_1 = a.Mantissa.Insert(0, "1");
+            string mant_2 = b.Mantissa.Insert(0,"1");
+            if (a.Exp < b.Exp)
+            {
+                bin_exp = b.Binary_exp;
+                for (int i = 0; i< b.Exp-a.Exp;i++) 
+                {
+                    mant_1= mant_1.Insert(0, "0");
+                    mant_1 = mant_1.Remove(mant_1.Length - 1, 1);
+                }
+            }
+            if (b.Exp < a.Exp)
+            {
+                bin_exp = a.Binary_exp;
+                for (int i = 0; i < a.Exp - b.Exp; i++)
+                {
+                    mant_2 = mant_2.Insert(0, "0");
+                    mant_2 = mant_2.Remove(mant_2.Length - 1, 1);
+                }
+            }
+            mant_1 = mant_1.Insert(0, "00"); // нолики для увеличения экспоненты 
+            mant_2 = mant_2.Insert(0, "00");
+            result = Mechanical_Addition(mant_1, mant_2);
+            if (result[0] == '1')
+            {
+                bin_exp = bin_exp.Insert(0, "0");
+                bin_exp = Mechanical_Addition(bin_exp, "01");
+                result = result.Remove(0, 1);
+            }
+            else
+            {
+                result = result.Remove(0, 2);
+                result = result.Insert(result.Length, "0");
+            }
+            result = "0" + bin_exp + result;
+            result = result.Remove(result.Length-1, 1); ;
+            return result;
+
+        }
         public string Addition(Binary a, Binary b)
         {
             //bool buf = false;
@@ -170,7 +212,7 @@ namespace Operations
             else return result.Insert(0, "0");
 
         }
-        public bool compare(string bigger, string smaller)
+        public bool Compare(string bigger, string smaller)
         {   
             if(bigger.Length > smaller.Length)
             {
@@ -198,7 +240,7 @@ namespace Operations
             }
             return true;
         }   
-        public string cut_off(string a, int step)
+        public string Cut_off(string a, int step)
         {
             string result = "";
             bool step_active = false;
@@ -230,7 +272,7 @@ namespace Operations
         return result;
 
         }
-        public int count_num_part(string a)
+        public int Count_num_part(string a)
         {
             int count = 0;
             bool is_num_part = false;
@@ -251,17 +293,17 @@ namespace Operations
             //if( a.Straight_binary == b.Straight_binary)   
             // building full part
             bool first_op = false, full_part_is_zero = true;
-            int demolition, count_part = count_num_part(a.Straight_binary);
+            int demolition, count_part = Count_num_part(a.Straight_binary);
             string result = "" , buf1 = a.Straight_binary;
             for( int i = 1 ; i <= count_part ; i++)
             {
-                if(compare(cut_off(buf1,i), b.Straight_binary) && !first_op) // first operation
+                if(Compare(Cut_off(buf1,i), b.Straight_binary) && !first_op) // first operation
                 {   
                     if( i != count_part )
                     {   int len_buf;
                     full_part_is_zero = false;
                         demolition = 15 - count_part  + i + 1; // number for demolition
-                        buf1 = cut_off(buf1,i);
+                        buf1 = Cut_off(buf1,i);
                         len_buf = buf1.Length;
                         for(int j = 0; j< 15 - len_buf;j++)
                         {
@@ -280,14 +322,14 @@ namespace Operations
                     }
                 }
                 //
-                 else if( !compare(buf1,b.Straight_binary) && i == count_part && first_op)
+                 else if( !Compare(buf1,b.Straight_binary) && i == count_part && first_op)
                  {
                   int len_buf = buf1.Length;
                   if(len_buf >= 16){buf1 = buf1.Remove(0,len_buf-15);}
                     buf1 = buf1.Insert(buf1.Length,a.Straight_binary[15].ToString());
                     result = result.Insert(result.Length,"0");
                 }
-                else if( compare(buf1,b.Straight_binary) && first_op)
+                else if( Compare(buf1,b.Straight_binary) && first_op)
                 {   
                   if( i != count_part )
                   {
@@ -312,7 +354,7 @@ namespace Operations
                     break;
                   }
                 }
-                else if( !compare(buf1,b.Straight_binary) && first_op && i != count_part)// если число получилось маленькое, еще раз сносим 
+                else if( !Compare(buf1,b.Straight_binary) && first_op && i != count_part)// если число получилось маленькое, еще раз сносим 
                 {
                     demolition = 15 - count_part  + i + 1;
                     buf1 = buf1.Insert(buf1.Length,a.Straight_binary[demolition].ToString() );
@@ -329,7 +371,7 @@ namespace Operations
             {
                 
 
-                    if(compare(buf1.Insert(buf1.Length,"0"), b.Straight_binary))
+                    if(Compare(buf1.Insert(buf1.Length,"0"), b.Straight_binary))
                     {
                     buf1 = buf1.Insert(buf1.Length,"0");
                     int len_buf = buf1.Length;
@@ -338,7 +380,7 @@ namespace Operations
                     fract_part = fract_part.Insert(fract_part.Length,"1");
                     continue;
                     }
-                    else if(!compare(buf1.Insert(buf1.Length,"0"), b.Straight_binary))
+                    else if(!Compare(buf1.Insert(buf1.Length,"0"), b.Straight_binary))
                     {
                         buf1 = buf1.Insert(buf1.Length,"0");
                         fract_part = fract_part.Insert(fract_part.Length,"0");

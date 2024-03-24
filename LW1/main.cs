@@ -12,7 +12,7 @@ namespace Menu
             int choose = -1;
             while (choose != 0)
             {
-                Console.WriteLine("Выберите операцию:\n1. Сложение\n2. Умножение\n3. Деление\n0. Выход");
+                Console.WriteLine("Выберите операцию:\n1. Сложение\n2. Умножение\n3. Деление\n4. Сложение чисел по IEEE\n0. Выход");
                 choose = Convert.ToInt32(Console.ReadLine());
                 switch (choose)
                 {
@@ -55,6 +55,18 @@ namespace Menu
                         Console.WriteLine(c3.Binary);
                         Console.WriteLine(c3.Number);
                         break;
+                    case 4:
+                        Console.WriteLine("Введите первое число:");
+                        Binary_IEEE a4 = new(Convert.ToSingle(Console.ReadLine().Replace(".",",")));
+                        Console.WriteLine($"Бинарный код: [{a4.Binary}]\r\n");
+                        Console.WriteLine("Введите второе число:");
+                        Binary_IEEE b4 = new(Convert.ToSingle(Console.ReadLine().Replace(".", ",")));
+                        Console.WriteLine($"Бинарный код: [{b4.Binary}]\r\n");
+                        Operation op4 = new();
+                        Binary_IEEE c4 = new(op4.Addition_float(a4, b4));
+                        Console.WriteLine(c4.Binary);
+                        Console.WriteLine(c4.Number);
+                        break;
 
 
                 }
@@ -62,20 +74,3 @@ namespace Menu
             }
     }
 } 
-//Binary_fract a = new Binary_fract(3.25);
-            //Console.WriteLine(a.Binary);
-            //Binary_fract b = new Binary_fract(a.Binary);
-            //Console.WriteLine(b.Number);
-            //Binary a = new Binary(9);
-            //Console.WriteLine(a.Straight_binary);
-            //Binary b = new Binary(7);
-            //Console.WriteLine(b.Straight_binary);
-            //Operation op = new Operation();
-            //string c = op.Multiplication(a, b);
-            //Binary cb = new Binary(c);
-            //Console.WriteLine(c);
-            //Console.WriteLine(cb.Number);
-            //Console.WriteLine(a.Straight_binary);
-            //Console.WriteLine(a.Reverse_binary);
-            //Console.WriteLine(a.Additional_binary);
-            //Console.WriteLine(a.Make_Decimal());
