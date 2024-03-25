@@ -326,7 +326,6 @@ namespace Operations
                  {
                   int len_buf = buf1.Length;
                   if(len_buf >= 16){buf1 = buf1.Remove(0,len_buf-15);}
-                    buf1 = buf1.Insert(buf1.Length,a.Straight_binary[15].ToString());
                     result = result.Insert(result.Length,"0");
                 }
                 else if( Compare(buf1,b.Straight_binary) && first_op)
@@ -392,6 +391,7 @@ namespace Operations
             {
                 result = result.Insert(0,"0");
             }
+          
             return result += fract_part;
            }
            else
@@ -401,7 +401,8 @@ namespace Operations
            {
                 result = result.Insert(0,"0");
            }
-            return result += fract_part;
+                
+                return result += fract_part;
            }
            
         }
