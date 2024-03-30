@@ -5,7 +5,6 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
-
 namespace truth_table
 {
     public class Truth_table
@@ -153,7 +152,7 @@ namespace truth_table
                     stack.Push((char)op.Equivalence(variable_keys[a], variable_keys[b]));
                 }
             }
-        return stack.Pop();
+        return variable_keys[stack.Pop()];
         }
         public void View_table()
         {
@@ -185,7 +184,6 @@ namespace truth_table
                 if (binary[i] == '1') { result += Math.Pow(2, grade); }
                 grade++;
             }
-            if (binary[0] == '1' && grade != 0) { result = 0 - result; }
             this.index_form = (int)result;
         }
         private void Make_sdnf()
@@ -212,7 +210,8 @@ namespace truth_table
                 }
 
             }
-            sdnf = sdnf.Remove(sdnf.LastIndexOf("|"),1); 
+            if (sdnf != "")
+                sdnf = sdnf.Remove(sdnf.LastIndexOf("|"),1); 
         }
         private void Make_sdnf_num()
         {
@@ -224,9 +223,13 @@ namespace truth_table
                     sdnf_num += i.ToString() + ", ";
                 }
             }
-            sdnf_num = sdnf_num.Remove(sdnf_num.LastIndexOf(","),1);
-            sdnf_num += ")";
-            sdnf_num += " |";
+            if (sdnf_num != "(")
+            { 
+                sdnf_num = sdnf_num.Remove(sdnf_num.LastIndexOf(","), 1);
+                sdnf_num += ")";
+                sdnf_num += " |";
+            }
+            if (sdnf_num == "(") { sdnf_num = sdnf_num.Remove(sdnf_num.LastIndexOf("("), 1); }
         }
         private void Make_sknf()
         {
@@ -252,6 +255,7 @@ namespace truth_table
                 }
 
             }
+            if (sknf != "")
             sknf = sknf.Remove(sknf.LastIndexOf("&"), 1);
         }
         private void Make_sknf_num()
@@ -264,9 +268,13 @@ namespace truth_table
                     sknf_num += i.ToString() + ", ";
                 }
             }
-            sknf_num = sknf_num.Remove(sknf_num.LastIndexOf(","), 1);
-            sknf_num += ")";
-            sknf_num += " &";
+            if (sknf_num != "(")
+            {
+                sknf_num = sknf_num.Remove(sknf_num.LastIndexOf(","), 1);
+                sknf_num += ")";
+                sknf_num += " &";
+            }
+            if (sknf_num == "(") { sknf_num = sknf_num.Remove(sknf_num.LastIndexOf("("), 1); }
         }
         public int Index_form
         {

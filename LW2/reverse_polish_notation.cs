@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Rev_Pol_Not
+namespace rev_pol_not
 {
     public class Reverse_polish_notation
     {
