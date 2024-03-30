@@ -39,11 +39,6 @@ namespace Menu
                         Console.WriteLine($"Результат умножения:\nДвоичное представление[{c2.Straight_binary}]\nДесятичное:{c2.Number}");
                         break;
                     case 3:
-                        //Console.WriteLine("Введите число:");
-                        //string str = Console.ReadLine().Replace(".",",");
-                        //Binary_fract a3 = new(Double.Parse(str));
-                        //Console.WriteLine($"В десятичном формате:[{a3.Number}]");
-                        //Console.WriteLine($"В двоичном формате:[{a3.Binary}]");
                         Console.WriteLine("Введите первое число:");
                         Binary a3 = new(Convert.ToInt32(Console.ReadLine()));
                         Console.WriteLine($"Прямой код: [{a3.Straight_binary}]\r\nОбратный код: [{a3.Reverse_binary}]\r\nДополнительный код: [{a3.Additional_binary}]\r\n");
