@@ -821,7 +821,21 @@ namespace truth_table
         }
 
 
+    private void Minimize_by_Karnaugh_map()
+        {
+            string binary = "";
+            for (int i = 0; i < Math.Pow(2, (double)num_of_vars); i++)
+            {
+                binary = binary.Insert(binary.Length, table[i][num_of_vars].ToString());
+            }
 
+            KarnaughMap kMap = new KarnaughMap(input_str, binary);
+            kMap.ConvertToExpression(min_sdnf_by_counting, min_sknf_by_counting);
+            Console.WriteLine("Входная индексная форма:" + binary);
+            kMap.PrintKarnaughTable();
+            min_sdnf_Karno = kMap.min_sdnf;
+            min_sknf_Karno = kMap.min_sknf;
+        }
     private void Revive_sticked(ref string sticked, string sticked_sdnf_or_sknf)
         {
             char op, neg_op;
@@ -970,21 +984,7 @@ namespace truth_table
 
         }
 
-    private void Minimize_by_Karnaugh_map()
-        {
-            string binary = "";
-            for (int i = 0; i < Math.Pow(2, (double)num_of_vars); i++)
-            {
-                binary = binary.Insert(binary.Length, table[i][num_of_vars].ToString());
-            }
-
-            KarnaughMap kMap = new KarnaughMap(input_str, binary);
-            kMap.ConvertToExpression(min_sdnf_by_counting, min_sknf_by_counting);
-            Console.WriteLine("Входная индексная форма:" + binary);
-            kMap.PrintKarnaughTable();
-            min_sdnf_Karno = kMap.min_sdnf;
-            min_sknf_Karno = kMap.min_sknf;
-        }
+    
         public int Index_form
         {
             get
