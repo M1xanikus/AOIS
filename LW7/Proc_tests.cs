@@ -107,7 +107,7 @@ namespace Proc_tests
         }
 
         [TestMethod]
-        public void Test_Sort_()
+        public void Test_Sort_and_Add()
         {
             Associative_Processor ap2 = new Associative_Processor();
             ap2.SortTable();
