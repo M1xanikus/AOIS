@@ -112,18 +112,18 @@ namespace truth_table
             input_table[0][num_of_vars] = Calculate_results(input_table[0],input_string);
             if (table.Count != 10)
             {
-                for (int i = 1; i < Math.Pow(2, (double)num_of_vars); i++)// ебаные 16 вместо 10, рот ебал
+                for (int i = 1; i < Math.Pow(2, (double)num_of_vars); i++)
                 {
-                    List<int> buf = new List<int>(input_table[i - 1]);// так а шо делать, если у меня код остальной ломается
+                    List<int> buf = new List<int>(input_table[i - 1]);
                     input_table.Add(Addition_one(buf));
                     input_table[i][num_of_vars] = Calculate_results(input_table[i], input_string);
                 }
             }
             else
             {
-                for (int i = 1; i < 10; i++)// ебаные 16 вместо 10, рот ебал
+                for (int i = 1; i < 10; i++)
                 {
-                    List<int> buf = new List<int>(input_table[i - 1]);// так а шо делать, если у меня код остальной ломается
+                    List<int> buf = new List<int>(input_table[i - 1]);
                     input_table.Add(Addition_one(buf));
                     input_table[i][num_of_vars] = Calculate_results(input_table[i], input_string);
                 }
